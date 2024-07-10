@@ -7,6 +7,7 @@ import Modal from './Modal';
 function PostList() {
   const [bodyText, setBodyText] = useState('');
   const [authorText, setAuthorText] = useState('');
+  const [modalIsVisible, setModalIsVisible] = useState(true);
 
   function changeBodyHandler(event) {
     setBodyText(event.target.value);
@@ -16,11 +17,17 @@ function PostList() {
     setAuthorText(event.target.value);
   }
 
+  function hideModalHandler() {
+    setModalIsVisible(false);
+  }
+
   return (
     <>
-      <Modal>
-        <NewPost onBodyChange={changeBodyHandler} onAuthorChange={changeAuthorHandler} />
-      </Modal>
+      {modalIsVisible && (
+        <Modal onClose={hideModalHandler}>
+          <NewPost onBodyChange={changeBodyHandler} onAuthorChange={changeAuthorHandler} />
+        </Modal>
+      )}
       <ul className={classes.posts}>
         <Post author={authorText} body={bodyText} />
         <Post author="Dylan" body="I'm learning to play the guitar!" />
