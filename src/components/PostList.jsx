@@ -1,25 +1,9 @@
-import { useState, useEffect } from "react";
+import { useLoaderData } from 'react-router-dom';
 import Post from "./Post";
 import classes from "./PostList.module.css";
 
 function PostList() {
-  const [posts, setPosts] = useState([]);
-  const [isFetching, setIsFetching] = useState(false);
-
-  // allows for side effect use in the component. we can control the side effects by using the
-  // dependency array. This will control when the code within the useEffect triggers
-  useEffect(() => {
-    async function fetchPosts() {
-      setIsFetching(true);
-      const response = await fetch('http://localhost:8080/posts');
-      const resData = await response.json();
-      setPosts(resData.posts);
-      setIsFetching(false);
-    }
-
-    fetchPosts();
-  }, []); // dependency array, tells the useEffect what it should look for to trigger a side effect
-  // in this case it will trigger only on mount
+  const posts = useLoaderData();
 
   function addPostHandler(postData) {
     fetch('http://localhost:8080/posts', {
@@ -36,21 +20,16 @@ function PostList() {
 
   return (
     <>
-      {!isFetching && posts.length > 0 && (
+      {posts.length > 0 && (
         <ul className={classes.posts}>
           {posts.map((post) => (<Post key={posts.body} author={posts.author} body={posts.body} />
           ))}
         </ul>
       )}
-      {!isFetching && post.length === 0 && (
+      {post.length === 0 && (
         <div style={{ textAlign: 'center', color: 'white' }}>
           <h2>There are no posts yet.</h2>
           <p>Start adding some!</p>
-        </div>
-      )}
-      {isFetching && (
-        <div style={{ textAlign: 'center', color: 'white' }}>
-          <p>Loading posts...</p>
         </div>
       )}
     </>

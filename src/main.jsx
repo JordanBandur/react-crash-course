@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import Posts from './routes/Posts';
+import Posts, { loader as postsLoader } from './routes/Posts';
 import NewPost from './routes/NewPost';
 import RootLayout from './routes/RootLayout';
 import './index.css';
@@ -13,6 +13,8 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <Posts />,
+        loader: () => { }, // gets executed whenever the element is about to be rendered. Good for preparing 
+        // data that is needed for the component to be rendered
         children: [{ path: '/create-post', element: <NewPost /> }],
       },
     ]
