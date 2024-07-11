@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Post from "./Post";
 import NewPost from "./NewPost";
 import classes from "./PostList.module.css";
@@ -6,6 +6,19 @@ import Modal from './Modal';
 
 function PostList({ isPosting, onStopPosting }) {
   const [posts, setPosts] = useState([]);
+
+  // allows for side effect use in the component. we can control the side effects by using the
+  // dependency array. This will control when the code within the useEffect triggers
+  useEffect(() => {
+    async function fetchPosts() {
+      const response = await fetch('http://localhost:8080/posts');
+      const resData = await response.json();
+      setPosts(resData.posts);
+    }
+
+    fetchPosts();
+  }, []); // dependency array, tells the useEffect what it should look for to trigger a side effect
+  // in this case it will trigger only on mount
 
   function addPostHandler(postData) {
     fetch('http://localhost:8080/posts', {
