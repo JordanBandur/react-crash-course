@@ -8,6 +8,13 @@ function PostList({ isPosting, onStopPosting }) {
   const [posts, setPosts] = useState([]);
 
   function addPostHandler(postData) {
+    fetch('http://localhost:8080/posts', {
+      method: 'POST',
+      body: JSON.stringify(postData),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
     setPosts((prev) => [postData, ...prev]); // React does not excute state updating functions instantly
     // using prev gets the current snapshot(prev) of the state and allows you update state with the
     // previous snapshot
